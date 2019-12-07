@@ -1,5 +1,5 @@
 
 
-# 絶対パスを実際のパスに書換えれば `rb` で起動できる
+# ここの絶対パスをスクリプトのアドレスに書換えれば `rb` で起動できる
 
-ruby -w C:\hogehogehoge\rb_e.rb
+ruby -w --verbose C:\hoge\hoge\hoge\rb_e.rb

@@ -1,15 +1,20 @@
 
 
 
-def want_list(msg='リストを入力して下さい')
+$stdin.set_encoding 'Windows-31J'
+$spacer = (' ' * 4)
 
-    $stderr.print "#{msg}：\n↓    "
+
+def want_list(msg='リストを入力してください')
+
+    $stderr.print "#{msg}：\n↓#{$spacer}"
 
     list = []
-    while line = gets() do
-        break if /^\n$/ =~ line
-        list.push line
-        $stderr.print '↓    '
+    while l = gets() do
+        l.encode! 'UTF-8'
+        break  if /^\r?\n$/ =~ l
+        list.push l
+        $stderr.print "↓#{$spacer}"
     end
 
     return list
@@ -20,43 +25,40 @@ def my_eval_rb
 
     # Read-Eval-Print Loop
     while true do
-        codearr = want_list 'Ruby#Eval: コードを入力してください (空行で実行)'
-        return if codearr.empty? or /^x$/i =~ codearr[0]
+        code = ''; rslt = ''; stat = ''; errstr = ''
+        err = nil
+
+        codearr = want_list 'Ruby#Eval: コードを入力してください (空行で評価)'
+        return  if (codearr.empty?) or (/^x$/i =~ codearr[0])
 
         $stderr.puts '//////////// 実行結果↓ ////////////'
 
-        code = ''
-        codearr.each do |c|
-            # 行頭の '↓    ' x N は無視する
-            c = "$2\n"  if /^(↓    )+(.*?)$/ =~ c
-            code << c
+        codearr.each do |cl|
+            cl = "$2\n"  if /^(↓#{$spacer})+(.*?)$/ =~ cl
+            code << cl
         end
 
-        errstr = ''
         begin
             rslt = eval code
         rescue => err
             errstr << "<#{err.class}> #{err.message}"
         end
-        err = nil
 
-        stat = rslt.inspect
-        stat.gsub!(/^\s+|\s+$/, '')  # Perl での /m
-        stat.gsub!(/[\r\n]+/, %q| |)
+        stat = rslt.inspect()
+        stat.gsub!(/^\s+|\s+$/, '')
+        stat.gsub!(/[\r\n]+/,  ' ')
         stat = "  Last Evaluated : #{stat}\n";
 
-        if !errstr.empty? then
-            errstr.gsub!(/\s+$/, '')
+        unless errstr.empty? then
             stat << "  !!! Error !!!  : #{errstr}\n";
         end
 
-        $stderr.print "//////////// ↑実行結果 ////////////\n"
-        $stderr.print stat
-        $stderr.print "\n"
+        $stderr.puts "//////////// ↑実行結果 ////////////"
+        $stderr.puts stat + "\n"
     end
 end
 
 
-$stderr.print "\n"
+$stderr.puts
 my_eval_rb()
-$stderr.print "\n"
+$stderr.puts
