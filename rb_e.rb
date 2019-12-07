@@ -20,7 +20,7 @@ def my_eval_rb
 
     # Read-Eval-Print Loop
     while true do
-        codearr = want_list 'コードを入力してください (空行で実行)'
+        codearr = want_list 'Ruby#Eval: コードを入力してください (空行で実行)'
         return if codearr.empty? or /^x$/i =~ codearr[0]
 
         $stderr.puts '//////////// 実行結果↓ ////////////'
@@ -36,8 +36,9 @@ def my_eval_rb
         begin
             rslt = eval code
         rescue => err
-            errstr << "#{err.message} (#{err.class})"
+            errstr << "<#{err.class}> #{err.message}"
         end
+        err = nil
 
         stat = rslt.inspect
         stat.gsub!(/^\s+|\s+$/, '')  # Perl での /m
