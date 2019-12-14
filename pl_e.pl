@@ -44,6 +44,7 @@ sub want_list {
     print STDERR sysenc "$msg：\n↓$spacer";
 
     my @list = ();
+    local $_;
     while ( <STDIN> ) {
         $_ = sysdec;
         last if $_ =~ /^\n$/;
@@ -82,8 +83,8 @@ sub my_eval_pl {
         }
         $stat = "  Last Evaluated : $stat\n";
         if ( $@ ) {
-            $_ = $@; s/\s+$//gs;
-            $stat .= "  !!! Error !!!  : $_\n";
+            my $errmsg = ($@ =~ s/\s+$//rgs);
+            $stat .= "  !!! Error !!!  : $errmsg\n";
         }
 
         say STDERR sysenc "//////////// ↑実行結果 ////////////";
