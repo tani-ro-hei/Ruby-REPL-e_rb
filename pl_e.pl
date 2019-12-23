@@ -31,6 +31,7 @@ BEGIN {
 
 
 sub u8dmp (_;@) {
+
     (my $str = Dumper @_) =~ s
         < ( \\ x \{ \p{IsXDigit}+ \} ) >
         < do { local $_ = eval "\"$1\""; $_ // $1; } >gex;
@@ -60,7 +61,7 @@ sub my_eval_pl {
 
     # Read-Eval-Print Loop
     MY_EVAL_REPL: while (1) {
-        my $aref = want_list 'Perl#Eval: コードを入力してください (空行で実行)';
+        my $aref = want_list 'Perl#Eval: コードを入力してください (空行で評価)';
 
         if ( !@$aref or ${$aref}[0] =~ /^x$/i ) {
             last MY_EVAL_REPL;
