@@ -25,7 +25,7 @@ def my_eval_rb
 
     # Read-Eval-Print Loop
     while true do
-        code = ''; rslt = ''; stat = ''; errstr = ''
+        code = rslt = stat = errstr = ''
         err = nil
 
         codearr = want_list 'Ruby#Eval: コードを入力してください (空行で評価)'
