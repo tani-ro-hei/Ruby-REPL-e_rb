@@ -25,7 +25,7 @@ def my_eval_rb
 
     # Read-Eval-Print Loop
     while true do
-        code = rslt = stat = errstr = ''
+        code, rslt, stat, errstr = '', '', '', ''
         err = nil
 
         codearr = want_list 'Ruby#Eval: コードを入力してください (空行で評価)'
@@ -47,10 +47,10 @@ def my_eval_rb
         stat = rslt.inspect()
         stat.gsub!(/^\s+|\s+$/, '')
         stat.gsub!(/[\r\n]+/,  ' ')
-        stat = "  Last Evaluated : #{stat}\n";
+        stat = "  Last Evaluated : #{stat}\n"
 
         unless errstr.empty? then
-            stat << "  !!! Error !!!  : #{errstr}\n";
+            stat << "  !!! Error !!!  : #{errstr}\n"
         end
 
         $stderr.puts "//////////// ↑実行結果 ////////////"
