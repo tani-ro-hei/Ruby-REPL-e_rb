@@ -4,7 +4,7 @@ use utf8;
 use Encode        qw( encode decode );
 use Data::Dumper  qw( Dumper );
 
-use subs qw( sjenc sjdec sysenc sysdec u8dmp want_list my_eval_pl );
+use subs qw( sjenc sjdec u8enc u8dec sysenc sysdec u8dmp want_list my_eval_pl );
 
 my $spacer = (' ' x 4);
 
@@ -18,14 +18,21 @@ exit 0;
 
 sub sjenc (_) { encode('cp932', $_[0]) }
 sub sjdec (_) { decode('cp932', $_[0]) }
+sub u8enc (_) { encode('utf8',  $_[0]) }
+sub u8dec (_) { decode('utf8',  $_[0]) }
 sub sysenc (_) { $_[0] };
 sub sysdec (_) { $_[0] };
 
 BEGIN {
+    no warnings 'redefine';
+
     if ('MSWin32' eq $^O) {
-        no warnings 'redefine';
         *sysenc = \&sjenc;
         *sysdec = \&sjdec;
+    }
+    else {
+        *sysenc = \&u8enc;
+        *sysdec = \&u8dec;
     }
 }
 
