@@ -16,12 +16,12 @@ MAIN: {
 exit 0;
 
 
-sub sjenc (_) { encode('cp932', $_[0]) }
-sub sjdec (_) { decode('cp932', $_[0]) }
-sub u8enc (_) { encode('utf8',  $_[0]) }
-sub u8dec (_) { decode('utf8',  $_[0]) }
-sub sysenc (_) { $_[0] };
-sub sysdec (_) { $_[0] };
+sub sjenc  :prototype(_) { encode('cp932', $_[0]) }
+sub sjdec  :prototype(_) { decode('cp932', $_[0]) }
+sub u8enc  :prototype(_) { encode('utf8',  $_[0]) }
+sub u8dec  :prototype(_) { decode('utf8',  $_[0]) }
+sub sysenc :prototype(_) { $_[0] };
+sub sysdec :prototype(_) { $_[0] };
 
 BEGIN {
     no warnings 'redefine';
@@ -37,7 +37,7 @@ BEGIN {
 }
 
 
-sub u8dmp (_;@) {
+sub u8dmp :prototype(_;@) {
 
     (my $str = Dumper @_) =~ s
         < ( \\ x \{ \p{IsXDigit}+ \} ) >
